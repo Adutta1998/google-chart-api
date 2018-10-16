@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div id="chart" style="height:100vh"></div>
+</body>
+<script type="text/javascript" 
+        src="https://www.gstatic.com/charts/loader.js"></script>
+<script src="chart.js"></script>
+<script>
+   
+    function loadJson(url){
+        let xhr = new XMLHttpRequest();
+        xhr.open('GET',url,1);
+        xhr.onreadystatechange = function(e){
+            if(this.readyState == 4 && this.status == 200){
+                var populationData = JSON.parse(this.responseText);
+                sampleData = [];
+                for(var i=0;i<populationData.length;i++){
+                    if(parseInt(populationData[i].population)>100000000)
+                    sampleData.push([populationData[i].country,parseInt(populationData[i].population)]);
+                }
+                loadChart(sampleData);
+            }
+        }
+        xhr.send(null); 
+    }
+    function loadChart(sampleData){
+        google.charts.load('current', {packages: ['corechart']});
+        console.log(sampleData);
+        google.charts.load("visualization", "1", {packages:["corechart"]});
+        // google.setOnLoadCallback(drawChart(sampleData));
+        timeout = setInterval(function () {
+          if (google.visualization != undefined) {
+             drawChart(this,sampleData);
+             clearInterval(timeout);
+          }
+       }, 300);
+    }
+   
+    loadJson("http://raw.githubusercontent.com/samayo/country-json/master/src/country-by-population.json");
+</script>
+</html>
