@@ -4,45 +4,28 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="https://fonts.googleapis.com/css?family=Raleway:500" rel="stylesheet">
     <title>Document</title>
 </head>
 <body>
-    <div id="chart" style="height:100vh"></div>
+    <button onclick="genRandomPoint(1,20)">Generate Random Point</button><br>
+    <p style="font-family: 'Raleway', sans-serif;">Line Chart</p>
+    <div id="chart1"></div>
+    <p style="font-family: 'Raleway', sans-serif;">Scattered Chart</p>
+    <div id="chart2"></div>
 </body>
 <script type="text/javascript" 
         src="https://www.gstatic.com/charts/loader.js"></script>
-<script src="chart.js"></script>
+        <script src="chart.js"></script>
 <script>
-   
-    function loadJson(url){
-        let xhr = new XMLHttpRequest();
-        xhr.open('GET',url,1);
-        xhr.onreadystatechange = function(e){
-            if(this.readyState == 4 && this.status == 200){
-                var populationData = JSON.parse(this.responseText);
-                sampleData = [];
-                for(var i=0;i<populationData.length;i++){
-                    if(parseInt(populationData[i].population)>100000000)
-                    sampleData.push([populationData[i].country,parseInt(populationData[i].population)]);
-                }
-                loadChart(sampleData);
-            }
-        }
-        xhr.send(null); 
-    }
-    function loadChart(sampleData){
-        google.charts.load('current', {packages: ['corechart']});
-        console.log(sampleData);
-        google.charts.load("visualization", "1", {packages:["corechart"]});
-        // google.setOnLoadCallback(drawChart(sampleData));
-        timeout = setInterval(function () {
-          if (google.visualization != undefined) {
-             drawChart(this,sampleData);
-             clearInterval(timeout);
-          }
-       }, 300);
-    }
-   
-    loadJson("http://raw.githubusercontent.com/samayo/country-json/master/src/country-by-population.json");
+    x=0;
+   function genRandomPoint(lower,upper){
+    let min = Math.ceil(lower);
+    let max = Math.floor(upper);
+    let randomInt =  Math.floor(Math.random() * (max - min + 1)) + min;
+    console.log(randomInt);
+    genDataArray(x,randomInt);
+    x=x+5;
+   }
 </script>
 </html>
